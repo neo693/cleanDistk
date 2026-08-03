@@ -1,17 +1,144 @@
 # CleanDisk
 
+[English](#english) | [中文](#中文)
+
+---
+
+<a name="english"></a>
+## English
+
+**CleanDisk** is a fast, efficient disk cleaner and space visualizer designed specifically for macOS. Native-built with **SwiftUI** and **AppKit**, it delivers high performance and an intuitive user interface.
+
+---
+
+### 🌟 Key Features
+
+#### 1. 📊 Disk Space Visualization (Treemap & Directory Tree)
+- **Interactive Treemap View**: Visually displays disk usage proportional to file and folder sizes using color-coded blocks.
+- **Directory Tree View**: Expand and collapse folder hierarchies to quickly pinpoint space-consuming files.
+- **Finder Integration**: Double-click to drill down, right-click to reveal in Finder or safely move to Trash.
+
+#### 2. 🛠️ Developer Cache Cleaner
+Tailored for developers to scan and clean build outputs and package manager caches:
+- **Xcode**: DerivedData, Archives, iOS/macOS Simulators, DeviceSupport.
+- **Node.js**: `node_modules` folders, npm / yarn / pnpm global caches.
+- **Python**: `pip` cache, virtual environments (`.venv` / `venv`), `__pycache__` files.
+- **Rust & Go**: Cargo / Go build & module caches, `target` directories.
+- **Package Managers**: CocoaPods, Carthage, Swift Package Manager (SPM) caches.
+
+#### 3. 🤖 AI / LLM Model Cache Cleaner
+With the rise of local AI tools, large model weights rapidly consume disk space. CleanDisk scans local AI caches:
+- **HuggingFace** (`~/.cache/huggingface`)
+- **Ollama Models** (`~/.ollama/models`)
+- **LM Studio** (`~/.cache/lm-studio`)
+- **PyTorch / vLLM** (`~/.cache/torch`)
+
+#### 4. 🗑️ App Leftovers Cleaner
+Intelligently scans residual configuration files, logs, and caches left by uninstalled applications in:
+- `~/Library/Application Support`
+- `~/Library/Caches`
+- `~/Library/Preferences`
+- `~/Library/Logs` & `Saved Application State`
+
+#### 5. 🌐 Browser Cache Cleaner
+One-click scan and cleanup for major macOS web browsers:
+- Safari, Google Chrome, Microsoft Edge, Mozilla Firefox, Brave, Arc.
+
+#### 6. 🛡️ Safe Deletion Mechanism
+- All deletions default to **moving files to the macOS Trash**, preventing permanent data loss from accidental deletion.
+- Guardrails built-in to protect critical system directories.
+
+---
+
+### 💻 System Requirements
+
+- **Operating System**: macOS 13.0 (Ventura) or later
+- **Architecture**: Apple Silicon (M1/M2/M3/M4) & Intel Macs
+- **Development Environment**: Swift 5.9+ / Xcode 15+
+
+---
+
+### 🚀 Build & Run
+
+#### 1. Run Directly (Development)
+Use Swift Package Manager to build and run the app from the terminal:
+
+```bash
+swift run
+```
+
+#### 2. Build Release Bundle & DMG
+The repository includes a build script (`build.sh`) to automate Release compilation, app icon generation (`AppIcon.icns`), `.app` packaging, and `.dmg` creation:
+
+```bash
+# Make script executable (if needed)
+chmod +x build.sh
+
+# Run the build script
+./build.sh
+```
+
+Upon completion, the following artifacts will be generated in the project root:
+- `CleanDisk.app`: Native macOS application (run via `open CleanDisk.app`)
+- `CleanDisk.dmg`: Distributable macOS installer image
+
+---
+
+### 🏗️ Project Architecture
+
+Built with modern **MVVM** pattern, located in `Sources/`:
+
+```text
+Sources/
+├── App/
+│   └── MacDiskCleanerApp.swift       # App lifecycle & window initialization
+├── Models/
+│   ├── DiskNode.swift                # Disk hierarchy & node sizing model
+│   ├── CleanerItem.swift             # Scanner item model
+│   └── ScanError.swift               # Scan error definitions
+├── Services/
+│   ├── DiskScanner.swift             # Concurrent multi-threaded disk scanner
+│   ├── DeveloperCleanerScanner.swift # Developer cache scanner
+│   ├── LargeModelCleanerScanner.swift# LLM & AI model cache scanner
+│   ├── AppLeftoverScanner.swift      # Uninstalled app residual scanner
+│   ├── BrowserCleanerScanner.swift   # Web browser cache scanner
+│   ├── TrashManager.swift            # Safe trash removal service
+│   └── FileSystemWatcher.swift       # Real-time FS event listener
+├── ViewModels/
+│   └── MainViewModel.swift           # Central state & navigation ViewModel
+└── Views/
+    ├── MainView.swift                # Main layout & navigation split view
+    ├── TreemapView.swift             # Interactive treemap visualization
+    ├── DirectoryTreeView.swift       # Directory tree list view
+    ├── DeveloperCleanerView.swift    # Developer cleaner view
+    ├── AppLeftoverCleanerView.swift  # App leftover cleaner view
+    ├── BrowserCleanerView.swift      # Browser cleaner view
+    └── LargeModelCleanerView.swift   # Large model cleaner view
+```
+
+---
+
+### 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+<a name="中文"></a>
+## 中文
+
 **CleanDisk** 是一款专为 macOS 打造的高效磁盘清理与空间可视化工具。基于 **SwiftUI** 与 **AppKit** 原生开发，具备极佳的性能与优雅的交互体验。
 
 ---
 
-## 🌟 核心功能
+### 🌟 核心功能
 
-### 1. 📊 磁盘空间可视化 (Treemap & 目录树)
+#### 1. 📊 磁盘空间可视化 (Treemap & 目录树)
 - **矩形树图 (Treemap View)**：直观展示磁盘文件与文件夹的空间占用比例，按文件大小以不同色彩区块呈现。
 - **目录树视图 (Directory Tree View)**：支持按层级展开/收起目录，迅速锁定占用空间最大的“大文件”。
 - **文件联动**：支持双击下钻文件夹、右键定位在 Finder 中查看或安全移至废纸篓。
 
-### 2. 🛠️ 开发者专用清理 (Developer Cleaner)
+#### 2. 🛠️ 开发者专用清理 (Developer Cleaner)
 针对开发者痛点，深度扫描并一键清理缓存与中间构建文件：
 - **Xcode**：DerivedData、Archives、iOS/macOS Simulator 模拟器缓存及 DeviceSupport。
 - **Node.js**：`node_modules` 依赖文件夹、npm / yarn / pnpm 全局缓存。
@@ -19,31 +146,31 @@
 - **Rust & Go**：Cargo / Go build 及 module 编译缓存与 `target` 目录。
 - **Package Managers**：CocoaPods, Carthage, Swift Package Manager (SPM) 缓存。
 
-### 3. 🤖 AI 大模型缓存清理 (Large Model Cleaner)
+#### 3. 🤖 AI 大模型缓存清理 (Large Model Cleaner)
 随着本地 AI 工具普及，大模型权重与缓存迅速消耗磁盘空间。CleanDisk 专门优化了对本地 AI 工具链的扫描：
 - **HuggingFace** (`~/.cache/huggingface`)
 - **Ollama Models** (`~/.ollama/models`)
 - **LM Studio** (`~/.cache/lm-studio`)
 - **PyTorch / vLLM** (`~/.cache/torch`)
 
-### 4. 🗑️ 卸载残留文件清理 (App Leftover Cleaner)
+#### 4. 🗑️ 卸载残留文件清理 (App Leftover Cleaner)
 智能检测已被卸载软件残留在系统内的配置文件、日志和缓存：
 - 扫描 `~/Library/Application Support`
 - 扫描 `~/Library/Caches`
 - 扫描 `~/Library/Preferences`
 - 扫描 `~/Library/Logs` 及 `Saved Application State`
 
-### 5. 🌐 浏览器缓存清理 (Browser Cleaner)
+#### 5. 🌐 浏览器缓存清理 (Browser Cleaner)
 支持主流 Mac 浏览器的缓存文件一键清理：
 - Safari, Google Chrome, Microsoft Edge, Mozilla Firefox, Brave, Arc
 
-### 6. 🛡️ 安全防误删机制
+#### 6. 🛡️ 安全防误删机制
 - 所有清理操作默认**将文件移至 macOS 系统废纸篓 (Trash)**，避免硬删除导致的数据丢失。
 - 关键系统目录防误删安全保护机制。
 
 ---
 
-## 💻 系统要求
+### 💻 系统要求
 
 - **操作系统**：macOS 13.0 (Ventura) 或更高版本
 - **架构**：Apple Silicon (M1/M2/M3/M4) 及 Intel 架构全支持
@@ -51,16 +178,16 @@
 
 ---
 
-## 🚀 编译与运行
+### 🚀 编译与运行
 
-### 1. 本地直接运行
+#### 1. 本地直接运行
 在项目根目录下，使用 Swift Package Manager 命令行直接构建并启动：
 
 ```bash
 swift run
 ```
 
-### 2. 一键打包 Release 应用与 DMG 镜像
+#### 2. 一键打包 Release 应用与 DMG 镜像
 项目提供了自动化构建打包脚本 `build.sh`，可完成 Release 编译、自动生成应用图标 `AppIcon.icns`、打包 `.app` 应用包以及生成可安装的 `.dmg` 文件：
 
 ```bash
@@ -77,7 +204,7 @@ chmod +x build.sh
 
 ---
 
-## 🏗️ 项目架构
+### 🏗️ 项目架构
 
 项目使用现代 **MVVM** 模式编写，源码位于 `Sources/` 目录下：
 
@@ -111,6 +238,6 @@ Sources/
 
 ---
 
-## 📄 开源许可
+### 📄 开源许可
 
 本项目采用 MIT 许可证，详情参阅 LICENSE 文件。
