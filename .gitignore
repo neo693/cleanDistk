@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Trashes
+
+# Swift Package Manager & Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcodeproj
+*.xcworkspace
+
+# Build Artifacts
+CleanDisk.app/
+CleanDisk.dmg
+dmg_root/
+AppIcon.iconset/
+AppIcon.icns
+
+# IDE & temporary files
+.agent.md
